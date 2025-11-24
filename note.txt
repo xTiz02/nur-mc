@@ -1,0 +1,9 @@
+https://prismarinejs.github.io/mineflayer/#/api?id=events
+
+npm install mineflayer
+npm install mineflayer-pathfinder
+npm install @google/genai
+npm install minecraft-data
+npm install vec3
+npm install socket.io-client
+npm install dotenv
