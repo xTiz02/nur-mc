@@ -3,56 +3,55 @@ import MinecraftBot from './nila.js';
 import LLMClient from './src/llm/gemini_client.js';
 import ActionExecutor from './src/action/executor.js';
 // const SocketIOClient = require('./socketio-client');
-import SocketIOClient from './websocket-server.js';
+import SocketIOClient from './socket-client.js';
+
 async function main() {
-    console.log('╔════════════════════════════════════════════╗');
-    console.log('║    MINECRAFT BOT CON GEMINI AI             ║');
-    console.log('╚════════════════════════════════════════════╝\n');
+  console.log('MINECRAFT BOT');
 
-    try {
-        // 1. Conectar bot de Minecraft
-        const minecraftBot = new MinecraftBot();
-        await minecraftBot.connect();
-        const bot = minecraftBot.getBot();
+  try {
+    // 1. Conectar bot de Minecraft
+    const minecraftBot = new MinecraftBot();
+    await minecraftBot.connect();
+    const bot = minecraftBot.getBot();
 
-        // 2. Inicializar LLM Client
-        console.log('\n Inicializando cliente Gemini...');
-        const llmClient = new LLMClient();
+    // 2. Inicializar LLM Client
+    console.log('\n Inicializando cliente Gemini...');
+    const llmClient = new LLMClient();
 
-        // 3. Inicializar Action Executor
-        console.log('️ Inicializando ejecutor de acciones...');
-        const executor = new ActionExecutor(bot);
+    // 3. Inicializar Action Executor
+    console.log('️ Inicializando ejecutor de acciones...');
+    const executor = new ActionExecutor(bot);
 
-        // 4. Iniciar servidor WebSocket
-        console.log(' Iniciando servidor WebSocket...');
-        const socketClient = new SocketIOClient(bot, llmClient, executor);
-        socketClient.connect();
+    // 4. Iniciar servidor WebSocket
+    console.log(' Iniciando servidor WebSocket...');
+    const socketClient = new SocketIOClient(bot, llmClient, executor);
+    socketClient.connect();
 
-        console.log('\n Sistema completamente inicializado');
-        console.log(' Esperando conexión del Agente Python...\n');
+    console.log('\n Sistema completamente inicializado');
+    console.log(' Esperando conexión del Agente Python...\n');
 
-        // Manejo de señales para cerrar limpiamente
-        process.on('SIGINT', () => {
-            console.log('\n\n Cerrando sistema...');
-            socketClient.disconnect();
-            minecraftBot.disconnect();
-            process.exit(0);
-        });
+    // Manejo de señales para cerrar limpiamente
+    process.on('SIGINT', () => {
+      console.log('\n\n Cerrando sistema...');
+      socketClient.disconnect();
+      minecraftBot.disconnect();
+      process.exit(0);
+    });
 
-    } catch (error) {
-        console.error('\n Error fatal:', error);
-        process.exit(1);
-    }
+  } catch (error) {
+    console.error('\n Error fatal:', error);
+    process.exit(1);
+  }
 }
 
 // Manejo de errores no capturados
 process.on('unhandledRejection', (error) => {
-    console.error(' Promesa rechazada no manejada:', error);
+  console.error(' Promesa rechazada no manejada:', error);
 });
 
 process.on('uncaughtException', (error) => {
-    console.error(' Excepción no capturada:', error);
-    process.exit(1);
+  console.error(' Excepción no capturada:', error);
+  process.exit(1);
 });
 
 main();
