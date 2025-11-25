@@ -1,7 +1,7 @@
 import mineflayer from 'mineflayer';
 import {pathfinder, Movements} from 'mineflayer-pathfinder';
-// const armorManager = require("mineflayer-armor-manager");
 import armorManager from 'mineflayer-armor-manager';
+// import {mineflayer as mineflayerViewer} from 'prismarine-viewer';
 import config from './util/constants.js';
 import {inject as injectObservations} from './src/mc/observation/inject.js';
 import {inject as injectPatches} from './util/bot-patches.js';
@@ -39,8 +39,15 @@ class MinecraftBot {
 
       // Configurar pathfinder cuando el bot se conecte
       this.bot.once('spawn', () => {
-        console.log(' Bot spawneado en el mundo');
-
+        // console.log(' Bot spawneado en el mundo');
+        // mineflayerViewer(this.bot, { firstPerson: true,port: 3000 }) // Start the viewing server on port 3000
+        // const path = [this.bot.entity.position.clone()]
+        //   this.bot.on('move', () => {
+        //     if (path[path.length - 1].distanceTo(this.bot.entity.position) > 1) {
+        //       path.push(this.bot.entity.position.clone())
+        //       this.bot.viewer.drawLine('path', path)
+        //     }
+        //   })
         this.bot.armorManager.equipAll()
 
         // const mcData = minecraftData(this.bot.version);

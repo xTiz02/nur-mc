@@ -9,7 +9,7 @@ export default {
   PYTHON_AGENT_HOST: 'localhost',
 
   // Configuraciones
-  ENVIRONMENT_UPDATE_INTERVAL: 5000, // 5 segundos
+  ENVIRONMENT_UPDATE_INTERVAL: 10000, // 10 segundos
   MAX_ACTIONS_PER_REQUEST: 10,
   OBSERVATION_RADIUS: {
     x: 8,

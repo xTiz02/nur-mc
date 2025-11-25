@@ -33,7 +33,8 @@ class SocketIOClient {
       this.emitBotReady();
 
       // Iniciar envío periódico del entorno
-      this.startEnvironmentUpdates();
+        this.handleEnvironmentRequest()
+        this.startEnvironmentUpdates();
     });
 
     this.socket.on('disconnect', (reason) => {
@@ -105,7 +106,6 @@ class SocketIOClient {
   emitEnvironmentUpdate(data) {
     if (this.isConnected) {
       this.socket.emit('environment_update', data);
-      console.log(' Enviado: environment_update');
     }
   }
 
@@ -141,7 +141,7 @@ class SocketIOClient {
     try {
       // 1. Obtener estado del entorno
       const environmentData = getEnvironmentData(this.bot);
-
+      console.log("Datos del Mundo: ",environmentData)
       // 2. Consultar a Gemini
       console.log(' Consultando a Gemini...');
       const llmResponse = await this.llmClient.decideActions(prompt,
@@ -195,7 +195,7 @@ class SocketIOClient {
         requestId,
         error: error.message,
         stack: error.stack,
-        environment: this.getEnvironmentData()
+        environment: getEnvironmentData(this.bot)
       });
     }
   }
@@ -203,7 +203,6 @@ class SocketIOClient {
   handleEnvironmentRequest() {
     const environmentData = getEnvironmentData(this.bot);
     this.emitEnvironmentUpdate(environmentData);
-    console.log(' Enviado entorno por solicitud');
   }
 
   handleStopExecution() {

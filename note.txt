@@ -7,3 +7,10 @@ npm install minecraft-data
 npm install vec3
 npm install socket.io-client
 npm install dotenv
+// npm install prismarine-viewer
+npm install canvas
+npm install mineflayer-armor-manager
+npm install github:IceTank/mineflayer-panorama
+
+
+
