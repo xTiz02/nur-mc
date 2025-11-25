@@ -1,21 +1,23 @@
 import pathfinder from 'mineflayer-pathfinder';
-
 const {goals, Movements} = pathfinder;
+
+// Acciones basicas que el bot tendra siempre en su contexto
 const primitiveActions = {
   // ==================== MOVIMIENTO ====================
   walkTo: {
-    description: "Camina hacia una posición específica o hacia un tipo de bloque",
-    params: ["target (puede ser {x, y, z} o nombre de bloque como 'oak_log')"],
+    description: "Camina hacia una posición específica de un player o hacia un tipo de bloque",
+    params: ["target (puede ser player como 'Piero' o nombre de bloque como 'oak_log')"],
     execute: async (bot, params) => {
       const {target} = params;
+      // Intentar encontrar jugador primero
+      const player = bot.players[target];
 
-      if (typeof target === 'object' && target.x !== undefined) {
-        // Es una posición específica
-        const goal = new goals.GoalNear(target.x, target.y, target.z, 1);
+      if (player && player.entity) {
+        const goal = new goals.GoalFollow(player.entity, 2);
         await bot.pathfinder.goto(goal);
-        return `Llegué a la posición ${target.x}, ${target.y}, ${target.z}`;
-      } else if (typeof target === 'string') {
-        // Es un tipo de bloque
+        return `Llegué cerca del jugador ${target} en ${player.entity.position}`;
+      } else {
+        // Intentar encontrar bloque
         const block = bot.findBlock({
           matching: (b) => b.name === target,
           maxDistance: 64
@@ -23,7 +25,7 @@ const primitiveActions = {
 
         if (!block) {
           throw new Error(
-              `No encontré ningún bloque de tipo ${target} cercano`);
+              `No encontré ningún player ni bloque ${target} cercano`);
         }
 
         const goal = new goals.GoalNear(block.position.x, block.position.y,
@@ -31,8 +33,6 @@ const primitiveActions = {
         await bot.pathfinder.goto(goal);
         return `Llegué al bloque ${target} en ${block.position}`;
       }
-
-      throw new Error("Parámetro target inválido");
     }
   },
 
@@ -63,25 +63,6 @@ const primitiveActions = {
   },
 
   // ==================== INTERACCIÓN CON BLOQUES ====================
-  breakBlock: {
-    description: "Rompe un bloque del tipo especificado que esté cerca",
-    params: ["blockType"],
-    execute: async (bot, params) => {
-      const {blockType} = params;
-      const block = bot.findBlock({
-        matching: (b) => b.name === blockType,
-        maxDistance: 6
-      });
-
-      if (!block) {
-        throw new Error(`No encontré ningún bloque de tipo ${blockType} cerca`);
-      }
-
-      await bot.dig(block);
-      return `Rompí el bloque ${blockType}`;
-    }
-  },
-
   placeBlock: {
     description: "Coloca un bloque del inventario en una posición relativa",
     params: ["blockType", "position (opcional, default: frente al bot)"],
@@ -113,33 +94,6 @@ const primitiveActions = {
       return `Coloqué ${blockType}`;
     }
   },
-  lookAt: {
-    description: "Mira hacia un bloque específico o posición",
-    params: ["target (nombre de bloque o {x, y, z})"],
-    execute: async (bot, params) => {
-      const {target} = params;
-
-      if (typeof target === 'object' && target.x !== undefined) {
-        await bot.lookAt(new bot.Vec3(target.x, target.y, target.z));
-        return `Mirando hacia ${target.x}, ${target.y}, ${target.z}`;
-      } else if (typeof target === 'string') {
-        const block = bot.findBlock({
-          matching: (b) => b.name === target,
-          maxDistance: 32
-        });
-
-        if (!block) {
-          throw new Error(`No encontré ningún bloque de tipo ${target}`);
-        }
-
-        await bot.lookAt(block.position);
-        return `Mirando hacia ${target}`;
-      }
-
-      throw new Error("Parámetro target inválido");
-    }
-  },
-
   // ==================== ITEMS ====================
   equipItem: {
     description: "Equipa un item del inventario",
@@ -204,7 +158,7 @@ const primitiveActions = {
 
   // ==================== COMUNICACIÓN ====================
   chat: {
-    description: "Envía un mensaje al chat",
+    description: "Envía un mensaje al chat general",
     params: ["message"],
     execute: async (bot, params) => {
       const {message} = params;

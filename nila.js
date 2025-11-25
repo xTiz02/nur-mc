@@ -1,7 +1,6 @@
 import mineflayer from 'mineflayer';
 import {pathfinder, Movements} from 'mineflayer-pathfinder';
 import armorManager from 'mineflayer-armor-manager';
-// import {mineflayer as mineflayerViewer} from 'prismarine-viewer';
 import config from './util/constants.js';
 import {inject as injectObservations} from './src/mc/observation/inject.js';
 import {inject as injectPatches} from './util/bot-patches.js';
@@ -11,7 +10,7 @@ import Chests from './src/mc/observation/chests.js';
 import onChat from './src/mc/observation/onChat.js';
 import onError from './src/mc/observation/onError.js';
 import onSave from './src/mc/observation/onSave.js';
-import minecraftData from 'minecraft-data';
+import mcData from 'minecraft-data';
 import {Vec3} from 'vec3';
 
 class MinecraftBot {

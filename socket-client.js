@@ -3,10 +3,9 @@ import config from './util/constants.js';
 import {getEnvironmentData} from "./src/action/parse_observation.js";
 
 class SocketIOClient {
-  constructor(bot, llmClient, executor) {
+  constructor(bot, agent) {
     this.bot = bot;
-    this.llmClient = llmClient;
-    this.executor = executor;
+    this.agent = agent;
     this.socket = null;
     this.isConnected = false;
     this.environmentUpdateInterval = null;
@@ -139,54 +138,8 @@ class SocketIOClient {
     console.log(`\n Nueva petición [${requestId}]: "${prompt}"`);
 
     try {
-      // 1. Obtener estado del entorno
-      const environmentData = getEnvironmentData(this.bot);
-      console.log("Datos del Mundo: ",environmentData)
-      // 2. Consultar a Gemini
-      console.log(' Consultando a Gemini...');
-      const llmResponse = await this.llmClient.decideActions(prompt,
-          environmentData);
-
-      console.log(` Gemini decidió: ${llmResponse.reasoning}`);
-
-      if (llmResponse.actions.length > 0) {
-        console.log(
-            ` Acciones a ejecutar: ${llmResponse.actions.map(a => a.name).join(
-                ', ')}`);
-      }
-
-      // 3. Ejecutar acciones
-      if (llmResponse.actions.length === 0) {
-        this.emitActionCompleted({
-          requestId,
-          success: true,
-          actions: [],
-          reasoning: llmResponse.reasoning,
-          results: [],
-          environment: environmentData
-        });
-        return;
-      }
-
-      const executionResult = await this.executor.executeActions(
-          llmResponse.actions,
-          requestId
-      );
-
-      // 4. Enviar resultado
-      this.emitActionCompleted({
-        requestId,
-        success: executionResult.success,
-        actions: llmResponse.actions.map(a => a.name),
-        reasoning: llmResponse.reasoning,
-        results: executionResult.results,
-        completedActions: executionResult.completedActions,
-        totalActions: executionResult.totalActions,
-        environment: getEnvironmentData(this.bot)
-      });
-
-      console.log(
-          ` Petición [${requestId}] completada: ${executionResult.completedActions}/${executionResult.totalActions} acciones exitosas\n`);
+      const results = await this.agent.executeActionPrompt(prompt, requestId);
+      this.emitActionCompleted(results);
 
     } catch (error) {
       console.error(`Error en petición [${requestId}]:`, error);
@@ -206,7 +159,7 @@ class SocketIOClient {
   }
 
   handleStopExecution() {
-    this.executor.stopExecution();
+    this.agent.stopExecution();
     this.emitExecutionStopped();
   }
 
@@ -215,7 +168,7 @@ class SocketIOClient {
   startEnvironmentUpdates() {
     // Enviar actualización cada 5 segundos si no está ejecutando acciones
     this.environmentUpdateInterval = setInterval(() => {
-      if (this.isConnected && !this.executor.isExecuting) {
+      if (this.isConnected && !this.agent.isExecuting) {
         const environmentData = getEnvironmentData(this.bot);
         this.emitEnvironmentUpdate(environmentData);
       }

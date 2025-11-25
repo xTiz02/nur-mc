@@ -2,8 +2,8 @@ import 'dotenv/config';
 import MinecraftBot from './nila.js';
 import LLMClient from './src/llm/gemini_client.js';
 import ActionExecutor from './src/action/executor.js';
-// const SocketIOClient = require('./socketio-client');
 import SocketIOClient from './socket-client.js';
+import AgentManager from "./src/agent/agent.js";
 
 async function main() {
   console.log('MINECRAFT BOT');
@@ -24,7 +24,8 @@ async function main() {
 
     // 4. Iniciar servidor WebSocket
     console.log(' Iniciando servidor WebSocket...');
-    const socketClient = new SocketIOClient(bot, llmClient, executor);
+    const agent = new AgentManager(bot, llmClient);
+    const socketClient = new SocketIOClient(bot, agent);
     socketClient.connect();
 
     console.log('\n Sistema completamente inicializado');
