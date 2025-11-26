@@ -66,6 +66,11 @@ class SocketIOClient {
       await this.handleActionRequest(data);
     });
 
+    this.socket.on('minecraft_view_user_face', async (data) => {
+      console.log(" Evento recibido: view_user_face");
+      await this.handleViewPlayerRequest(data);
+    });
+
     // Evento para solicitar estado del entorno
     this.socket.on('minecraft_request_environment', async () => {
       await this.handleEnvironmentRequest();
@@ -139,6 +144,31 @@ class SocketIOClient {
 
     try {
       const results = await this.agent.executeActionPrompt(prompt, requestId);
+      this.emitActionCompleted(results);
+
+    } catch (error) {
+      console.error(`Error en petición [${requestId}]:`, error);
+
+      this.emitActionFailed({
+        requestId,
+        error: error.message,
+        stack: error.stack,
+        environment: getEnvironmentData(this.bot)
+      });
+    }
+  }
+  async handleViewPlayerRequest(payload) {
+    const {name, requestId, speak_time} = payload;
+
+    if (!name || !requestId) {
+      console.error(' Petición inválida: falta playerName o requestId');
+      return;
+    }
+
+    console.log(`\n Nueva petición [${requestId}]: "Ver cara de ${name}"`);
+
+    try {
+      const results = await this.agent.executeViewPlayerFace(name, requestId);
       this.emitActionCompleted(results);
 
     } catch (error) {

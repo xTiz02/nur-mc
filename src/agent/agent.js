@@ -1,5 +1,6 @@
 import {getEnvironmentData} from "../action/parse_observation.js";
 import ActionExecutor from '../action/executor.js';
+import {interactiveActions} from "../action/interaction_action.js";
 
 class AgentManager {
   constructor(bot, llmClient) {
@@ -56,6 +57,10 @@ class AgentManager {
       totalActions: executionResult.totalActions,
       environment: getEnvironmentData(this.bot)
     };
+  }
+
+  async executeViewPlayerFace(playerName, requestId) {
+    await interactiveActions.lookAtNearbyPlayer.execute(this.bot,playerName)
   }
 
   async stopExecution() {

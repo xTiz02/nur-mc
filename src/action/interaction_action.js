@@ -19,3 +19,5 @@ const interactiveActions = {
     }
   }
 }
+
+export {interactiveActions};
