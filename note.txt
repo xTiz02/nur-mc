@@ -11,6 +11,7 @@ npm install dotenv
 // npm install canvas
 npm install mineflayer-armor-manager
 npm install mineflayer-auto-eat
+npm install --save mineflayer-collectblock
 // npm install github:IceTank/mineflayer-panorama
 
 

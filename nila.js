@@ -1,6 +1,7 @@
 import mineflayer from 'mineflayer';
 import {pathfinder, Movements} from 'mineflayer-pathfinder';
 import armorManager from 'mineflayer-armor-manager';
+import collectBlock from 'mineflayer-collectblock';
 import { loader as autoEat } from 'mineflayer-auto-eat'
 import config from './util/constants.js';
 import {inject as injectObservations} from './src/mc/observation/inject.js';
@@ -11,7 +12,7 @@ import Chests from './src/mc/observation/chests.js';
 import onChat from './src/mc/observation/onChat.js';
 import onError from './src/mc/observation/onError.js';
 import onSave from './src/mc/observation/onSave.js';
-import mcData from 'minecraft-data';
+import minecraftData from 'minecraft-data';
 import {Vec3} from 'vec3';
 
 class MinecraftBot {
@@ -37,6 +38,7 @@ class MinecraftBot {
       this.bot.loadPlugin(pathfinder);
       this.bot.loadPlugin(armorManager);
       this.bot.loadPlugin(autoEat)
+      this.bot.loadPlugin(collectBlock)
 
       // Configurar pathfinder cuando el bot se conecte
       this.bot.once('spawn', () => {
@@ -51,11 +53,11 @@ class MinecraftBot {
         //   })
         this.bot.armorManager.equipAll()
         this.bot.autoEat.enableAuto()
-        // const mcData = minecraftData(this.bot.version);
+        const mcData = minecraftData(this.bot.version);
 
         const movements = new Movements(this.bot);
         this.bot.pathfinder.setMovements(movements);
-
+        this.bot.collectBlock.findFromVein();
         // Inyectar sistema de observaciones
         const observationsList = [
           Inventory,
