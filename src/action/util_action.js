@@ -4,7 +4,7 @@ import config from '../../util/constants.js';
 const utilActions = {
    getNearbyPlayers: {
      execute: async (bot) => {
-      const radius = config.OBSERVATION_RADIUS
+      const radius = config.OBSERVATION_DISTANCE / 2;
        return Object.values(bot.players).filter(p => {
         return p.entity &&
             p.entity.position.distanceTo(bot.entity.position) < radius;

@@ -1,6 +1,7 @@
 import mineflayer from 'mineflayer';
 import {pathfinder, Movements} from 'mineflayer-pathfinder';
 import armorManager from 'mineflayer-armor-manager';
+import { loader as autoEat } from 'mineflayer-auto-eat'
 import config from './util/constants.js';
 import {inject as injectObservations} from './src/mc/observation/inject.js';
 import {inject as injectPatches} from './util/bot-patches.js';
@@ -35,6 +36,7 @@ class MinecraftBot {
       // Cargar plugins
       this.bot.loadPlugin(pathfinder);
       this.bot.loadPlugin(armorManager);
+      this.bot.loadPlugin(autoEat)
 
       // Configurar pathfinder cuando el bot se conecte
       this.bot.once('spawn', () => {
@@ -48,7 +50,7 @@ class MinecraftBot {
         //     }
         //   })
         this.bot.armorManager.equipAll()
-
+        this.bot.autoEat.enableAuto()
         // const mcData = minecraftData(this.bot.version);
 
         const movements = new Movements(this.bot);

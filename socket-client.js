@@ -115,12 +115,12 @@ class SocketIOClient {
 
   emitActionCompleted(data) {
     this.socket.emit('minecraft_action_completed', data);
-    console.log(` Enviado: action_completed [${data.requestId}]`);
+    console.log(` Enviado: action_completed [${data}]`);
   }
 
   emitActionFailed(data) {
     this.socket.emit('minecraft_action_failed', data);
-    console.log(` Enviado: action_failed [${data.requestId}]`);
+    console.log(` Enviado: action_failed [${data}]`);
   }
 
   emitExecutionStopped() {

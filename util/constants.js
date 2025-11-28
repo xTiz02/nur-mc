@@ -3,7 +3,7 @@ export default {
   MINECRAFT_HOST: 'localhost',
   MINECRAFT_PORT: 5050,
   BOT_USERNAME: 'Nila',
-  OBSERVATION_DISTANCE: 64,
+  OBSERVATION_DISTANCE: 32, // Debe ser múltiplo de 16
   // WebSocket
   PYTHON_AGENT_PORT: 8081,
   PYTHON_AGENT_HOST: 'localhost',
