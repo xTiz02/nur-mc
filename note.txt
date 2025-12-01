@@ -14,6 +14,7 @@ npm install mineflayer-auto-eat
 npm install --save mineflayer-collectblock
 npm install --save mineflayer-pvp
 npm i minecrafthawkeye
+npm i mineflayer-proxy-inspector
 // npm install github:IceTank/mineflayer-panorama
 
 

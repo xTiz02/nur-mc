@@ -62,12 +62,12 @@ class SocketIOClient {
 
     // Evento para solicitar acción al bot
     this.socket.on('minecraft_action_request', async (data) => {
-      console.log(" Evento recibido: action_request");
+      console.log(" Evento recibido: minecraft_action_request");
       await this.handleActionRequest(data);
     });
 
     this.socket.on('minecraft_view_user_face', async (data) => {
-      console.log(" Evento recibido: view_user_face");
+      console.log(" Evento recibido: minecraft_view_user_face");
       await this.handleViewPlayerRequest(data);
     });
 

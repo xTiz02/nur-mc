@@ -3,7 +3,7 @@ import MinecraftBot from './nila.js';
 import LLMClient from './src/llm/gemini_client.js';
 import ActionExecutor from './src/action/executor.js';
 import SocketIOClient from './socket-client.js';
-import AgentManager from "./src/agent/agent.js";
+import AgentManager from "./src/manager/agent.js";
 
 async function main() {
   console.log('MINECRAFT BOT');

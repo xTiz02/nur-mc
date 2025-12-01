@@ -42,37 +42,38 @@ export const WOOL_COLORS = [
   'red',
   'black'
 ]
-let mc_version = '1.20';
+let mc_version = '1.20.1';
 let mcdata = null;
 
-export function initBot() {
+export function initBot(bot) {
 
-  const bot = mineflayer.createBot({
-    host: config.MINECRAFT_HOST,
-    port: config.MINECRAFT_PORT,
-    username: config.BOT_USERNAME,
-    auth: 'offline',
-    // version: false, // Auto-detect
-  });
-
-  bot.loadPlugin(pvp);
-  bot.loadPlugin(pathfinder);
-  bot.loadPlugin(armorManager);
-  bot.loadPlugin(autoEat)
-  bot.loadPlugin(collectBlock)
-  bot.loadPlugin(minecraftHawkEye.default)
-  // bot.loadPlugin(bloodhound)
-  bloodhound(mineflayer)(bot)
-  // bot.once('resourcePack', () => {
-  //   bot.acceptResourcePack();
+  // const bot = mineflayer.createBot({
+  //   host: config.MINECRAFT_HOST,
+  //   port: config.MINECRAFT_PORT,
+  //   username: config.BOT_USERNAME,
+  //   auth: 'offline',
+  //   // version: false, // Auto-detect
   // });
+  //
+  // bot.loadPlugin(pvp);
+  // bot.loadPlugin(pathfinder);
+  // bot.loadPlugin(armorManager);
+  // bot.loadPlugin(autoEat)
+  // bot.loadPlugin(collectBlock)
+  // bot.loadPlugin(minecraftHawkEye.default)
+  // // bot.loadPlugin(bloodhound)
+  // bloodhound(mineflayer)(bot)
+  // // bot.once('resourcePack', () => {
+  // //   bot.acceptResourcePack();
+  // // });
 
 
-  bot.once('login', () => {
+  // bot.once('login', () => {
     mc_version = bot.version;
     mcdata = minecraftData(mc_version);
+    console.log(` Minecraft data loaded for version ${mc_version}`);
 
-  });
+  // });
 
   return bot;
 }
