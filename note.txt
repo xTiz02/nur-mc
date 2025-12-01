@@ -12,6 +12,8 @@ npm install dotenv
 npm install mineflayer-armor-manager
 npm install mineflayer-auto-eat
 npm install --save mineflayer-collectblock
+npm install --save mineflayer-pvp
+npm i minecrafthawkeye
 // npm install github:IceTank/mineflayer-panorama
 
 

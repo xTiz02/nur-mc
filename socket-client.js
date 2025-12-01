@@ -18,8 +18,8 @@ class SocketIOClient {
     this.socket = io(socketUrl, {
       transports: ['websocket', 'polling'],
       reconnection: true,
-      reconnectionDelay: 5000,
-      reconnectionAttempts: 30
+      reconnectionDelay: 10000,
+      reconnectionAttempts: 10
     });
 
     // ==================== EVENTOS DE CONEXIÓN ====================

@@ -1,3 +1,6 @@
+import pathfinder from "mineflayer-pathfinder";
+
+const {goals, Movements} = pathfinder;
 // Acciones random para el bot
 const randomActions = {
   breakBlock: {
@@ -26,7 +29,6 @@ const randomActions = {
       let {direction,maxTime,callback} = params;
 
       if (!callback){
-        //Ejecutar una vez la exploracion
         callback = () => false;
       }
       // const test = callback();
@@ -73,9 +75,9 @@ const randomActions = {
           const z =
               bot.entity.position.z +
               Math.floor(Math.random() * 20 + 10) * dz;
-          let goal = new GoalNear(x, y, z);
+          let goal = new goals.GoalNear(x, y, z);
           if (dy === 0) {
-            goal = new GoalNearXZ(x, z);
+            goal = new goals.GoalNearXZ(x, z);
           }
           bot.pathfinder.setGoal(goal);
 
@@ -103,3 +105,5 @@ const randomActions = {
     }
   }
 }
+
+export {randomActions};

@@ -7,7 +7,7 @@ const interactiveActions = {
       if (!player || !player.entity) {
         throw new Error(`Jugador ${playerName} no encontrado`);
       }
-      const nearbyPlayers = await uc.getNearbyPlayers.execute(bot);
+      const nearbyPlayers = uc.getNearbyPlayers.execute(bot);
 
       if (!nearbyPlayers.includes(playerName)) {
         throw new Error(`El jugador ${playerName} no está cerca`);
