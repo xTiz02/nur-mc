@@ -1,12 +1,18 @@
 import {getEnvironmentData} from "../action/parse_observation.js";
 import ActionExecutor from '../action/executor.js';
 import {interactiveActions} from "../action/interaction_action.js";
+import AttackManager from "./attacked.js";
 
 class AgentManager {
   constructor(bot, llmClient) {
     this.bot = bot;
     this.llmClient = llmClient;
+    this.attacktManager = null;
     this.executor = new ActionExecutor(bot);
+  }
+
+  setAttackManager(value) {
+    this.attacktManager = value;
   }
 
   async executeActionPrompt(prompt, requestId) {
@@ -61,6 +67,13 @@ class AgentManager {
 
   async executeViewPlayerFace(playerName, requestId) {
     await interactiveActions.lookAtNearbyPlayer.execute(this.bot,playerName)
+  }
+
+  executeRegisteredAttack(attackerName,victimName,weaponName) {
+    if (!this.attacktManager) {
+      throw new Error("AttackManager no está configurado");
+    }
+    this.attacktManager.registerAttack(attackerName,victimName,weaponName);
   }
 
   async stopExecution() {

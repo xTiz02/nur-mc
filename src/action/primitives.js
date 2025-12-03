@@ -234,67 +234,39 @@ const primitiveActions = {
       }
 
       return `Miné ${Math.min(count, targets.length)} bloques de ${blockType}`;
-      // const blockTypeId = getBlockId(blockType);
-      // const blocks = bot.findBlocks({
-      //   matching: blockTypeId,
-      //   maxDistance: 32,
-      //   count: count
-      // })
-      //
-      // if (blocks.length === 0) {
-      //   bot.chat("I don't see that block nearby.")
-      //   return
-      // }
-      //
-      // const targets = []
-      // for (let i = 0; i < Math.min(blocks.length, count); i++) {
-      //   targets.push(bot.blockAt(blocks[i]))
-      // }
-      //
-      // bot.chat(`Found ${targets.length} ${blockType}(s)`)
-      //
-      // try {
-      //   await bot.collectBlock.collect(targets, {ignoreNoPath : true})
-      //   // All blocks have been collected.
-      //   bot.chat('Done')
-      // } catch (err) {
-      //   // An error occurred, report it.
-      //   bot.chat(err.message)
-      //   console.log(err)
-      // }
     }
   },
-  placeBlock: {
-    name: "placeBlock",
-    description: "Coloca un bloque del inventario en una posición relativa",
-    params: ["blockType", "position (opcional default: frente al bot)"],
-    execute: async (bot, params) => {
-      const {blockType, position} = params;
-      const item = bot.inventory.items().find(i => i.name === blockType);
-
-      if (!item) {
-        throw new Error(`No tengo ${blockType} en mi inventario`);
-      }
-
-      await bot.equip(item, 'hand');
-
-      let referenceBlock;
-      if (position) {
-        referenceBlock = bot.blockAt(position);
-      } else {
-        // Coloca frente al bot
-        const frontPos = bot.entity.position.offset(0, -1, 1);
-        referenceBlock = bot.blockAt(frontPos);
-      }
-
-      if (!referenceBlock) {
-        throw new Error("No puedo encontrar un bloque de referencia para colocar");
-      }
-
-      await bot.placeBlock(referenceBlock, new bot.Vec3(0, 1, 0));
-      return `Coloqué ${blockType}`;
-    }
-  }, // ==================== ITEMS ====================
+  // placeBlock: {
+  //   name: "placeBlock",
+  //   description: "Coloca un bloque del inventario en una posición relativa",
+  //   params: ["blockType", "position (opcional default: frente al bot)"],
+  //   execute: async (bot, params) => {
+  //     const {blockType, position} = params;
+  //     const item = bot.inventory.items().find(i => i.name === blockType);
+  //
+  //     if (!item) {
+  //       throw new Error(`No tengo ${blockType} en mi inventario`);
+  //     }
+  //
+  //     await bot.equip(item, 'hand');
+  //
+  //     let referenceBlock;
+  //     if (position) {
+  //       referenceBlock = bot.blockAt(position);
+  //     } else {
+  //       // Coloca frente al bot
+  //       const frontPos = bot.entity.position.offset(0, -1, 1);
+  //       referenceBlock = bot.blockAt(frontPos);
+  //     }
+  //
+  //     if (!referenceBlock) {
+  //       throw new Error("No puedo encontrar un bloque de referencia para colocar");
+  //     }
+  //
+  //     await bot.placeBlock(referenceBlock, new bot.Vec3(0, 1, 0));
+  //     return `Coloqué ${blockType}`;
+  //   }
+  // }, // ==================== ITEMS ====================
   equipItem: {
     name: "equipItem",
     description: "Equipa un item del inventario",

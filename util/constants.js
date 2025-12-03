@@ -18,5 +18,6 @@ export default {
   },
   NEARBY_BLOCKS_RADIUS: 16,
   MAX_RETRIES: 3,
-  ACTION_TIMEOUT: 30000 // 30 segundos
+  ACTION_TIMEOUT: 30000, // 30 segundos
+  ATTACKED_INTERVAL: 4000 // 4 segundos
 };

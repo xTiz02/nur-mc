@@ -18,6 +18,11 @@ class MinecraftBot {
   constructor() {
     this.bot = null;
     this.isReady = false;
+    this.agent = null;
+  }
+
+  setAgent(agent) {
+    this.agent = agent;
   }
 
   async connect() {
@@ -198,7 +203,14 @@ class MinecraftBot {
         } else {
           console.log("Entity: " + (victim.displayName || victim.username) + " attacked by: " + (attacker.displayName || attacker.username));
         }
+
+        // Solo Registrar ataque hacia el bot
+        if(victim.displayName === config.BOT_USERNAME) {
+          this.agent.executeRegisteredAttack(attacker.username, victim.username, weapon.displayName);
+        }
+
       });
+
       this.bot.on('stoppedAttacking', () => {
         console.log(' El bot ha dejado de atacar');
       })
@@ -221,13 +233,13 @@ class MinecraftBot {
 
       this.bot.on('death', () => {
         console.log(' Bot murió');
-        this.bot.chat('¡Auch! Morí :(');
+        this.bot.chat('Me morí ...');
       });
 
-      this.bot.on('health', () => {
-        console.log(`  Vida crítica: ${this.bot.health}`);
-
-      });
+      // this.bot.on('health', () => {
+      //   console.log(`  Vida crítica: ${this.bot.health}`);
+      //
+      // });
 
       // Timeout de conexión
       setTimeout(() => {

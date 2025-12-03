@@ -1,7 +1,8 @@
 //Acciones para mejorar la interaccion del bot con los jugadores
 import {utilActions as uc} from "./util_action.js";
+
 const interactiveActions = {
-   lookAtNearbyPlayer: {
+  lookAtNearbyPlayer: {
     execute: async (bot, playerName) => {
       const player = bot.players[playerName];
       if (!player || !player.entity) {

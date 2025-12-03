@@ -3,7 +3,8 @@ import MinecraftBot from './nila.js';
 import LLMClient from './src/llm/gemini_client.js';
 import ActionExecutor from './src/action/executor.js';
 import SocketIOClient from './socket-client.js';
-import AgentManager from "./src/agent/agent.js";
+import AgentManager from "./src/manager/agent.js";
+import AttackManager from "./src/manager/attacked.js";
 
 async function main() {
   console.log('MINECRAFT BOT');
@@ -27,7 +28,10 @@ async function main() {
     const agent = new AgentManager(bot, llmClient);
     const socketClient = new SocketIOClient(bot, agent);
     socketClient.connect();
-
+    // await new Promise(resolve => setTimeout(resolve, 2000));
+    const attack = new AttackManager(socketClient)
+    agent.setAttackManager(attack);
+    minecraftBot.setAgent(agent);
     console.log('\n Sistema completamente inicializado');
     console.log(' Esperando conexión del Agente Python...\n');
 
